@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aadhaar Credential Decoder – SD-JWT & mDOC</title>
+  <meta name="description" content="Auto-detect and decode Aadhaar SD-JWT VC and mDOC (ISO 18013-5 CBOR) digital identity credentials issued by UIDAI." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">CredentialDecoder</span>
+          <span class="logo-sub">SD-JWT · mDOC · CBOR</span>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-blue">UIDAI</span>
+        <span class="badge badge-purple">ISO 18013-5</span>
+        <span class="badge badge-green">SD-JWT VC</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <h1 class="hero-title">Decode Digital Identity Credentials</h1>
+      <p class="hero-subtitle">
+        Paste an <strong>SD-JWT VC</strong> or <strong>mDOC (CBOR)</strong> credential below. The format is auto-detected.
+      </p>
+    </section>
+
+    <div class="input-card">
+      <div class="input-card-header">
+        <span class="input-label">Credential Input</span>
+        <div class="input-actions">
+          <button id="btn-sample-sdjwt" class="btn-ghost" title="Load a sample SD-JWT">Sample SD-JWT</button>
+          <button id="btn-sample-mdoc" class="btn-ghost" title="Load a sample mDOC">Sample mDOC</button>
+          <button id="btn-clear" class="btn-ghost" title="Clear">Clear</button>
+        </div>
+      </div>
+      <textarea
+        id="credential-input"
+        class="credential-textarea"
+        spellcheck="false"
+        autocomplete="off"
+        placeholder="Paste SD-JWT (eyJ...) or base64-encoded mDOC (CBOR) here…"
+      ></textarea>
+      <div class="input-footer">
+        <span id="format-hint" class="format-hint"></span>
+        <button id="btn-decode" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Decode Credential
+        </button>
+      </div>
+    </div>
+
+    <div id="output-section" class="output-section hidden">
+      <div class="output-header">
+        <div id="format-badge-container"></div>
+        <button id="btn-copy-json" class="btn-ghost small">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy JSON
+        </button>
+      </div>
+
+      <div id="tabs" class="tabs">
+        <button class="tab active" data-tab="identity">Identity</button>
+        <button class="tab" data-tab="address">Address</button>
+        <button class="tab" data-tab="contact">Contact</button>
+        <button class="tab" data-tab="issuance">Issuance</button>
+        <button class="tab" data-tab="photo">Photo</button>
+        <button class="tab" data-tab="raw">Raw JSON</button>
+      </div>
+
+      <div id="tab-identity" class="tab-panel active"></div>
+      <div id="tab-address" class="tab-panel hidden"></div>
+      <div id="tab-contact" class="tab-panel hidden"></div>
+      <div id="tab-issuance" class="tab-panel hidden"></div>
+      <div id="tab-photo" class="tab-panel hidden"></div>
+      <div id="tab-raw" class="tab-panel hidden"></div>
+    </div>
+
+    <div id="error-section" class="error-section hidden">
+      <div class="error-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div>
+        <div class="error-title">Decoding Failed</div>
+        <div id="error-message" class="error-message"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>This tool runs entirely in your browser. No data is sent to any server.</p>
+    <p>Supports UIDAI Aadhaar SD-JWT VC · ISO 18013-5 mDOC (CBOR)</p>
+  </footer>
+
+  <!-- CBOR library (cbor-js) via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/cbor-js@0.1.0/cbor.min.js"></script>
+  <script src="decoder.js"></script>
+</body>
+</html>
