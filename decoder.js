@@ -3,10 +3,14 @@
 function b64urlDecode(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return atob(s); }
 function parseUtf8Base64Url(s) {
   try {
-    const b = b64urlDecode(s);
-    const u = new Uint8Array(b.length);
-    for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
-    return new TextDecoder('utf-8').decode(u);
+    const raw = b64urlDecode(s);
+    try {
+      return decodeURIComponent(escape(raw));
+    } catch (e) {
+      const bytes = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+      return new TextDecoder('utf-8').decode(bytes);
+    }
   } catch (e) { return null; }
 }
 function b64urlDecodeJson(s) { try { return JSON.parse(parseUtf8Base64Url(s)); } catch (e) { return null; } }
