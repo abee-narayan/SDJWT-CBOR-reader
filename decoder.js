@@ -38,7 +38,13 @@ function decodeSDJWT(raw) {
     try {
       const jsonStr = parseUtf8Base64Url(d) || b64urlDecode(d);
       const obj = JSON.parse(jsonStr);
-      if (Array.isArray(obj) && obj.length >= 3) c[obj[1]] = obj[2];
+      if (Array.isArray(obj) && obj.length >= 3) {
+        let k = obj[1], v = obj[2];
+        if (typeof v === 'string' && k.toLowerCase().includes('image') && !v.startsWith('data:')) {
+          v = 'data:image/jpeg;base64,' + v;
+        }
+        c[k] = v;
+      }
     } catch (e) { }
   });
   return { format: 'SD-JWT VC', formatDetail: 'alg: ' + (h && h.alg || '?') + ' | kid: ' + (h && h.kid || '?'), meta: { iss: p.iss, iat: fmtDT(p.iat ? p.iat * 1000 : null), exp: fmtDT(p.exp ? p.exp * 1000 : null), id: p.id }, claims: c, rawPayload: p };
