@@ -209,4 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
     this.innerHTML = 'Copied!';
     setTimeout(() => this.innerHTML = og, 2000);
   });
+
+  // Auto-load from localStorage for Aadhaar Intent Generator module
+  const pending = localStorage.getItem('pending-credential');
+  if (pending) {
+    localStorage.removeItem('pending-credential');
+    input.value = pending;
+    btnDec.click();
+  }
 });

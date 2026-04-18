@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aadhaar Intent Request Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="generator.js"></script>
+</head>
+<body>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <main class="glass-container">
+        <header>
+            <h1>Aadhaar Intent Request Generator</h1>
+            <p>Generate Web-to-App intents and Cross-Device QR codes for Aadhaar SD-JWT authentication.</p>
+        </header>
+
+        <section class="config-section">
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="ac-input">OVSE Client ID (ac)</label>
+                    <input type="text" id="ac-input" value="1a2f" placeholder="e.g. 1a2f">
+                </div>
+                <div class="input-group">
+                    <label for="sa-input">OVSE Registration (sa)</label>
+                    <input type="text" id="sa-input" value="00b1" placeholder="e.g. 00b1">
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="cb-input">Callback URL (cb)</label>
+                <div class="hint-text">Leave the default to use your local mock server. (Run ngrok on port 5173!)</div>
+                <input type="url" id="cb-input" value="https://YOUR-NGROK-ID.ngrok-free.app/api/callback">
+            </div>
+
+            <div class="input-group">
+                <label>Requested Claims (Constructs 64-bit 'sc')</label>
+                <div class="claims-grid" id="claims-grid">
+                    <!-- Checkboxes injected by JS -->
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <label for="private-key-input">RSA Private Key (PEM format)</label>
+                    <button type="button" id="btn-fill-test-key" style="background: none; border: none; color: var(--accent); font-size: 0.75rem; cursor: pointer; text-decoration: underline;">Autofill Test Key</button>
+                </div>
+                <textarea id="private-key-input" placeholder="-----BEGIN PRIVATE KEY-----..."></textarea>
+            </div>
+        </section>
+
+        <section class="actions">
+            <button id="btn-generate-web" class="primary-btn">Generate Web-to-App</button>
+            <button id="btn-generate-qr" class="primary-btn outline">Generate QR (Cross-Device)</button>
+        </section>
+
+        <div id="error-message" class="alert hidden"></div>
+
+        <section id="results-section" class="results-section hidden">
+            <div class="card-header">
+                <h2>Generated Result <span class="tag" id="result-type"></span></h2>
+            </div>
+            <div class="result-content">
+                <textarea id="result-text" readonly></textarea>
+                <div id="qr-container" class="hidden">
+                    <canvas id="qr-canvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="polling-section" class="polling-section hidden">
+            <div class="polling-header">
+                <div class="pulse-ring"></div>
+                <span>Listening for Aadhaar App Callback...</span>
+            </div>
+            <div id="callback-result" class="hidden">
+                <p><strong>Success!</strong> Credential received.</p>
+                <button id="btn-view-credential" class="primary-btn" style="margin-top: 1rem;">View in Decoder</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
