@@ -1,0 +1,12 @@
+{
+  "name": "sdjwt-cbor-reader",
+  "version": "1.0.0",
+  "description": "SDJWT and CBOR Decoder with Public/Private Key Generator",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}
