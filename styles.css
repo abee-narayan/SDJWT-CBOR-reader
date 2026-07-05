@@ -530,6 +530,45 @@ body {
   border-top: 1px solid var(--border);
 }
 
+@media (max-width: 768px) {
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+  .header-badges {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .main {
+    padding: 24px 16px 60px;
+  }
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+  .reader-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+  .reader-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  .chapter-footer {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  .chapter-footer button {
+    width: 100%;
+  }
+}
+
 @media (max-width: 992px) {
   .blog-reader-layout {
     flex-direction: column;
