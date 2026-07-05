@@ -497,8 +497,28 @@ body {
 }
 
 .table-responsive {
+  width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin: 30px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* Custom scrollbar for tables to indicate scrollability */
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+.table-responsive::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0 0 8px 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+.table-responsive::-webkit-scrollbar-thumb:active {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .chapter-body table {
