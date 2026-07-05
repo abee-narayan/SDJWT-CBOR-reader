@@ -313,9 +313,16 @@ body {
   letter-spacing: -0.5px;
 }
 .blogs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  overflow-x: auto;
   gap: 24px;
+  padding-bottom: 24px; /* Room for hover shadows */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+.blogs-grid::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 .blog-card {
   display: flex;
@@ -326,6 +333,9 @@ body {
   overflow: hidden;
   text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  flex: 0 0 calc(100% - 48px); /* Peek the next card naturally */
+  max-width: 360px;
+  scroll-snap-align: start;
 }
 .blog-card:hover {
   transform: translateY(-4px);
