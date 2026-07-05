@@ -60,7 +60,7 @@
 
     async function loadBook() {
       try {
-        const response = await fetch('./registry_blog/chapters.json');
+        const response = await fetch('./registry_blog/chapters.json?v=' + new Date().getTime());
         chaptersData = await response.json();
         
         const nav = document.getElementById('chapter-nav');
