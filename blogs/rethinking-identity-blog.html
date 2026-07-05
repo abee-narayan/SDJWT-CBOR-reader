@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rethinking How Indians Share Their Identity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <header class="header">
+    <div class="header-inner" style="max-width: 1400px;">
+      <a href="../index.html" class="logo" style="text-decoration: none;">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">Back to Tools</span>
+          <span class="logo-sub">CredentialDecoder</span>
+        </div>
+      </a>
+      <div class="header-badges">
+        <span class="badge badge-blue">Knowledge Base</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="blog-reader-layout">
+    <aside class="reader-sidebar" id="sidebar">
+      <h3 class="sidebar-title">The Architectural Playbook</h3>
+      <nav class="chapter-nav" id="chapter-nav">
+        <!-- Dynamically generated chapters go here -->
+      </nav>
+    </aside>
+
+    <main class="reader-main">
+      <button id="mobile-menu-btn" class="mobile-menu-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        Chapters
+      </button>
+      <div class="reader-content" id="reader-content">
+        <div class="loading-state">Loading book contents...</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let chaptersData = [];
+    let currentChapterId = null;
+
+    async function loadBook() {
+      try {
+        const response = await fetch('./rethinking_identity/chapters.json?v=' + new Date().getTime());
+        chaptersData = await response.json();
+        
+        const nav = document.getElementById('chapter-nav');
+        chaptersData.forEach((chapter, index) => {
+          const a = document.createElement('a');
+          a.href = `#${chapter.id}`;
+          a.className = 'chapter-link';
+          a.textContent = chapter.title;
+          a.onclick = (e) => {
+            e.preventDefault();
+            renderChapter(chapter.id);
+            // On mobile, close sidebar after click
+            document.getElementById('sidebar').classList.remove('open');
+          };
+          nav.appendChild(a);
+        });
+
+        // Load hash or first chapter
+        const hash = window.location.hash.substring(1);
+        if (hash && chaptersData.find(c => c.id === hash)) {
+          renderChapter(hash);
+        } else {
+          renderChapter(chaptersData[0].id);
+        }
+      } catch (err) {
+        document.getElementById('reader-content').innerHTML = '<p class="error-text">Failed to load the book contents.</p>';
+        console.error(err);
+      }
+    }
+
+    function renderChapter(chapterId) {
+      const chapter = chaptersData.find(c => c.id === chapterId);
+      if (!chapter) return;
+
+      currentChapterId = chapterId;
+      window.history.pushState(null, null, `#${chapterId}`);
+
+      // Update Active State in Nav
+      document.querySelectorAll('.chapter-link').forEach(link => {
+        if (link.getAttribute('href') === `#${chapterId}`) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      // Update Content
+      // We will wrap tables in a container for overflow scrolling
+      let contentHtml = chapter.content;
+      contentHtml = contentHtml.replace(/<table/g, '<div class="table-responsive"><table');
+      contentHtml = contentHtml.replace(/<\/table>/g, '</table></div>');
+      // Fix image paths
+      contentHtml = contentHtml.replace(/src=".\/images/g, 'src="./rethinking_identity/images');
+
+      const contentDiv = document.getElementById('reader-content');
+      contentDiv.innerHTML = `
+        <div class="chapter-body">
+          ${contentHtml}
+        </div>
+        <div class="chapter-footer">
+          ${getNavigationButtons(chapterId)}
+        </div>
+      `;
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function getNavigationButtons(chapterId) {
+      const index = chaptersData.findIndex(c => c.id === chapterId);
+      let html = '';
+      
+      if (index > 0) {
+        const prev = chaptersData[index - 1];
+        html += `<button class="btn-ghost" onclick="renderChapter('${prev.id}')">← Previous</button>`;
+      } else {
+        html += `<div></div>`;
+      }
+      
+      if (index < chaptersData.length - 1) {
+        const next = chaptersData[index + 1];
+        html += `<button class="btn-primary" onclick="renderChapter('${next.id}')">Next →</button>`;
+      }
+      return html;
+    }
+
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+    });
+
+    loadBook();
+  </script>
+</body>
+</html>
