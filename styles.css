@@ -612,9 +612,12 @@ body {
   .reader-content table {
     display: block;
     overflow-x: auto;
-    white-space: nowrap;
     width: 100%;
     -webkit-overflow-scrolling: touch;
+  }
+  .chapter-body th, .chapter-body td {
+    padding: 8px 10px;
+    font-size: 12px;
   }
   .chapter-footer {
     flex-direction: column;
