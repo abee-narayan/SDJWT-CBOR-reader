@@ -80,13 +80,7 @@ body {
 /* ─── Main layout ─────────────────────────────────────── */
 .main { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
 
-.split-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
-}
-@media (min-width: 992px) {
-  .split-layout { flex-direction: row; align-items: flex-start; }
+
   .split-left { flex: 1.15; padding-right: 20px; }
   .split-right { flex: 0.85; position: sticky; top: 100px; }
 }
@@ -100,7 +94,7 @@ body {
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   margin-bottom: 16px;
 }
-.hero-subtitle { color: var(--text-muted); font-size: 16px; max-width: 560px; margin: 0 0 24px; line-height: 1.6; }
+.hero-subtitle { color: var(--text-muted); font-size: 16px; max-width: 700px; margin: 0 0 24px; line-height: 1.6; }
 .hero-subtitle strong { color: #8aabf5; font-weight: 600; }
 
 /* ─── Tools Grid ──────────────────────────────────────── */
@@ -124,18 +118,26 @@ body {
 
 /* ─── Knowledge Hub ───────────────────────────────────── */
 .knowledge-intro {
+  display: flex;
+  align-items: center;
+  gap: 24px;
   background: rgba(24, 29, 46, 0.4);
   border: 1px solid var(--border2);
   border-radius: var(--radius);
-  padding: 32px;
+  padding: 24px 32px;
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   margin-bottom: 40px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
+.knowledge-intro .knowledge-icon {
+  margin-bottom: 0;
+  flex-shrink: 0;
+  width: 56px; height: 56px;
+}
 .knowledge-icon {
   width: 48px; height: 48px; border-radius: 12px;
   background: linear-gradient(135deg, rgba(79,110,247,0.2), rgba(155,93,229,0.2));
-  color: #c0d0ff; display: grid; place-items: center; margin-bottom: 20px;
+  color: #c0d0ff; display: grid; place-items: center;
   border: 1px solid rgba(108,143,232,0.3);
 }
 .knowledge-title { font-size: 22px; font-weight: 700; margin-bottom: 12px; color: #fff; letter-spacing: -0.5px; }

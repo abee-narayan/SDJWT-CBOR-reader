@@ -39,16 +39,27 @@
     </div>
   </header>
 
-  <main class="main">
-    <div class="split-layout">
-      <!-- Left side: Functionality -->
-      <div class="split-left">
-        <section class="hero">
-          <h1 class="hero-title">Decode Digital Identity Credentials</h1>
+    <main class="main">
+    <section class="hero">
+      <h1 class="hero-title">Decode Digital Identity Credentials</h1>
           <p class="hero-subtitle">
             Paste an <strong>SD-JWT VC</strong> or <strong>mDOC (CBOR)</strong> credential below. The format is auto-detected.
           </p>
-          <div class="tools-grid">
+    </section>
+
+    <section class="knowledge-intro" style="margin-top: 10px; margin-bottom: 40px;">
+          <div class="knowledge-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          </div>
+          <h2 class="knowledge-title">Verifiable Credentials</h2>
+          <p class="knowledge-text">
+            Digital Identity is shifting towards privacy-preserving, cryptographically secure credentials. 
+            Formats like <strong style="color: var(--accent);">SD-JWT</strong> allow users to share only specific claims, 
+            while <strong style="color: var(--accent2);">mDOC</strong> provides standard mobile driving license structures.
+          </p>
+        </section>
+
+    <div class="tools-grid">
             <a href="./Private public key generator/index.html" class="tool-link tool-link-blue">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
               Open Key Generator
@@ -66,9 +77,8 @@
               SVG Logo Vectorizer
             </a>
           </div>
-        </section>
 
-        <div class="input-card">
+    <div class="input-card">
           <div class="input-card-header">
             <span class="input-label">Credential Input</span>
             <div class="input-actions">
@@ -128,12 +138,9 @@
             <div id="error-message" class="error-message"></div>
           </div>
         </div>
-      </div>
 
-      <!-- Right side: Knowledge / Educational -->
-      <div class="split-right">
-        <!-- Blogs Section -->
-        <section class="blogs-section" id="blogs">
+
+    <section class="blogs-section" id="blogs" style="margin-top: 60px;">
           <h2 class="section-title">Knowledge Base</h2>
           <div class="blogs-grid">
             <!-- BLOGS_GRID_START -->
@@ -158,20 +165,6 @@
             <!-- BLOGS_GRID_END -->
           </div>
         </section>
-
-        <section class="knowledge-intro" style="margin-top: 40px;">
-          <div class="knowledge-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-          </div>
-          <h2 class="knowledge-title">Verifiable Credentials</h2>
-          <p class="knowledge-text">
-            Digital Identity is shifting towards privacy-preserving, cryptographically secure credentials. 
-            Formats like <strong style="color: var(--accent);">SD-JWT</strong> allow users to share only specific claims, 
-            while <strong style="color: var(--accent2);">mDOC</strong> provides standard mobile driving license structures.
-          </p>
-        </section>
-      </div>
-    </div>
   </main>
 
   <footer class="footer">
