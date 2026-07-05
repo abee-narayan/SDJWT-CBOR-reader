@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome To The New Blog – Blog</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.4);
+    }
+    .blog-header { margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+    .blog-title { font-size: 32px; font-weight: 700; color: var(--text); }
+    .blog-meta { color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 10px; }
+    .blog-content { line-height: 1.8; color: var(--text); }
+    .blog-content h1, .blog-content h2, .blog-content h3 { color: var(--text); margin-top: 30px; margin-bottom: 15px; }
+    .blog-content p { margin-bottom: 16px; }
+    .blog-content ul, .blog-content ol { margin-bottom: 16px; padding-left: 20px; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--accent); font-weight: 500; margin-bottom: 20px; font-size: 14px; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="blog-container">
+    <a href="../index.html#blogs" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back to Home
+    </a>
+    <div class="blog-header">
+      <h1 class="blog-title">Welcome To The New Blog</h1>
+      <div class="blog-meta">July 3, 2026</div>
+    </div>
+    <div class="blog-content">
+      <p>Welcome to the New Blog!</p><p>This is an automated test blog. We have just introduced a new build system that lets you drop a docx, pdf, md, or txt file into the blogs_source directory. </p><p>When you run npm run build:blogs, it automatically parses the file and generates a beautiful HTML page for it!</p><p>Try dropping your own docx files into the folder and see the magic happen.<br/></p>
+    </div>
+  </div>
+</body>
+</html>

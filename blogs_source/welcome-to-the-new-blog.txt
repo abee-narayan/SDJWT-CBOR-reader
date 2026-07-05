@@ -1,0 +1,7 @@
+Welcome to the New Blog!
+
+This is an automated test blog. We have just introduced a new build system that lets you drop a docx, pdf, md, or txt file into the blogs_source directory. 
+
+When you run npm run build:blogs, it automatically parses the file and generates a beautiful HTML page for it!
+
+Try dropping your own docx files into the folder and see the magic happen.
