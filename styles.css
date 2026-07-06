@@ -615,6 +615,12 @@ body {
   .tools-grid {
     grid-template-columns: 1fr;
   }
+  .knowledge-intro {
+    flex-direction: column;
+    padding: 20px 16px;
+    text-align: center;
+    gap: 16px;
+  }
   .reader-content img {
     max-width: 100%;
     height: auto;
