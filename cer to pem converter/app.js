@@ -37,12 +37,13 @@ function handleFile(file) {
     errorMessage.style.display = 'none';
     resultArea.classList.remove('active');
 
-    if (!file.name.toLowerCase().endsWith('.cer')) {
+    const lowerName = file.name.toLowerCase();
+    if (!lowerName.endsWith('.cer') && !lowerName.endsWith('.crt')) {
         errorMessage.style.display = 'block';
         return;
     }
 
-    currentFileName = file.name.replace('.cer', '.pem');
+    currentFileName = file.name.replace(/\.(cer|crt)$/i, '.pem');
 
     const reader = new FileReader();
 

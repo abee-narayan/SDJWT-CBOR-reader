@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CER to PEM Converter</title>
+    <title>CER/CRT to PEM Converter</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -161,8 +161,8 @@
 <body>
 
 <div class="container">
-    <h1>CER to PEM Converter</h1>
-    <p>Upload a .cer public certificate to extract and download the PEM file.</p>
+    <h1>CER/CRT to PEM Converter</h1>
+    <p>Upload a .cer or .crt public certificate to extract and download the PEM file.</p>
 
     <div class="upload-area" id="uploadArea">
         <svg class="upload-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -171,11 +171,11 @@
             <line x1="12" y1="3" x2="12" y2="15"></line>
         </svg>
         <div class="upload-text">Click to upload or drag and drop</div>
-        <div class="upload-subtext">.cer files only</div>
-        <input type="file" id="fileInput" accept=".cer">
+        <div class="upload-subtext">.cer or .crt files only</div>
+        <input type="file" id="fileInput" accept=".cer,.crt">
     </div>
 
-    <div class="error-message" id="errorMessage">Invalid file format. Please upload a .cer file.</div>
+    <div class="error-message" id="errorMessage">Invalid file format. Please upload a .cer or .crt file.</div>
 
     <div class="result-area" id="resultArea">
         <textarea id="pemOutput" readonly></textarea>

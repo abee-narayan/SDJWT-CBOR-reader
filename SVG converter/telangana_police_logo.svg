@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Core shield path for drawing and clipping -->
+    <path id="shield" d="M 50,90 C 120,140 180,110 250,45 C 320,110 380,140 450,90 C 420,240 500,360 250,480 C 0,360 80,240 50,90 Z" />
+    
+    <clipPath id="shield-clip">
+      <use href="#shield" />
+    </clipPath>
+    
+    <!-- Text Paths -->
+    <path id="ts-text" d="M 60,250 Q 250,180 440,250" fill="none" />
+    <path id="police-text" d="M 50,325 Q 250,255 450,325" fill="none" />
+
+    <!-- Wreath Leaf Definition -->
+    <path id="leaf" d="M 0,0 C 4,-2 8,-2 10,-8 C 6,-8 2,-6 0,0" fill="#d4af37"/>
+    <path id="leaf-rev" d="M 0,0 C 4,2 8,2 10,8 C 6,8 2,6 0,0" fill="#d4af37"/>
+    
+    <!-- Half Wreath Definition for mirroring -->
+    <g id="half-wreath">
+      <path d="M 245,465 Q 160,440 100,340" fill="none" stroke="#d4af37" stroke-width="2.5" stroke-linecap="round" />
+      
+      <use href="#leaf" transform="translate(225, 459) rotate(165)" />
+      <use href="#leaf-rev" transform="translate(215, 460) rotate(25)" />
+      
+      <use href="#leaf" transform="translate(195, 448) rotate(145)" />
+      <use href="#leaf-rev" transform="translate(185, 448) rotate(15)" />
+      
+      <use href="#leaf" transform="translate(168, 431) rotate(125)" />
+      <use href="#leaf-rev" transform="translate(160, 428) rotate(5)" />
+      
+      <use href="#leaf" transform="translate(145, 410) rotate(105)" />
+      <use href="#leaf-rev" transform="translate(138, 405) rotate(-5)" />
+      
+      <use href="#leaf" transform="translate(128, 385) rotate(85)" />
+      <use href="#leaf-rev" transform="translate(122, 378) rotate(-15)" />
+      
+      <use href="#leaf" transform="translate(116, 358) rotate(65)" />
+      <use href="#leaf-rev" transform="translate(110, 349) rotate(-25)" />
+      
+      <!-- Top leaf -->
+      <use href="#leaf" transform="translate(108, 334) rotate(45)" />
+    </g>
+  </defs>
+
+  <!-- Border System (Uses exact mathematical stroke stacking for perfect parallel offsets) -->
+  <use href="#shield" fill="#2a3c75" stroke="#1a1a1a" stroke-width="32" stroke-linejoin="round" />
+  <use href="#shield" fill="none" stroke="#d4af37" stroke-width="14" stroke-linejoin="round" />
+  <use href="#shield" fill="#2a3c75" />
+
+  <!-- Lion Capital (Ashoka Emblem) - High Precision Vector Silhouette -->
+  <g transform="translate(250, 90) scale(0.95)" fill="#d4af37">
+    <path d="M -8,25 L -8,10 C -16,10 -26,0 -16,-15 C -11,-20 -6,-15 -5,-10 C -6,-20 -3,-30 0,-30 C 3,-30 6,-20 5,-10 C 6,-15 11,-20 16,-15 C 26,0 16,10 8,10 L 8,25 Z" />
+    <path d="M -18,25 L 18,25 L 18,32 L -18,32 Z" />
+    <path d="M -16,32 Q 0,45 16,32 L 11,45 L -11,45 Z" />
+    <!-- Negative space details using shield blue -->
+    <circle cx="0" cy="28.5" r="3" fill="#2a3c75" />
+    <path d="M -5,15 L -5,0 M 5,15 L 5,0 M 0,15 L 0,5" stroke="#2a3c75" stroke-width="1.2" />
+    <circle cx="-4" cy="-20" r="1.5" fill="#2a3c75" />
+    <circle cx="4" cy="-20" r="1.5" fill="#2a3c75" />
+  </g>
+
+  <!-- Satyameva Jayate Text -->
+  <text x="250" y="160" fill="#d4af37" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" letter-spacing="1">सत्यमेव जयते</text>
+
+  <!-- Red Ribbon Layer (Clipped perfectly inside the shield) -->
+  <g clip-path="url(#shield-clip)">
+    <path d="M -10,260 Q 250,190 510,260 L 510,340 Q 250,270 -10,340 Z" fill="#e32b31" />
+  </g>
+
+  <!-- Typography: TELANGANA STATE -->
+  <text fill="#ffffff" font-family="'Arial Black', Impact, Arial, sans-serif" font-weight="900" font-size="34">
+    <textPath href="#ts-text" startOffset="50%" text-anchor="middle" textLength="340" lengthAdjust="spacingAndGlyphs">TELANGANA STATE</textPath>
+  </text>
+
+  <!-- Typography: POLICE -->
+  <text fill="#ffffff" font-family="'Arial Black', Impact, Arial, sans-serif" font-weight="900" font-size="64">
+    <textPath href="#police-text" startOffset="50%" text-anchor="middle" textLength="330" lengthAdjust="spacingAndGlyphs">POLICE</textPath>
+  </text>
+
+  <!-- Bottom Core Values -->
+  <g fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold" font-size="16" text-anchor="middle">
+    <text x="250" y="380">Duty</text>
+    <text x="250" y="405">Honour</text>
+    <text x="250" y="430">Compassion</text>
+  </g>
+
+  <!-- Olive Wreaths -->
+  <use href="#half-wreath" />
+  <use href="#half-wreath" transform="translate(500, 0) scale(-1, 1)" />
+
+  <!-- Center Wreath Tie -->
+  <g fill="#d4af37">
+    <path d="M 250,455 L 243,465 L 257,465 Z" />
+    <path d="M 243,465 L 235,480 L 247,475 Z" />
+    <path d="M 257,465 L 265,480 L 253,475 Z" />
+  </g>
+
+</svg>
