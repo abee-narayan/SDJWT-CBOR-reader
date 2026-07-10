@@ -189,7 +189,7 @@ const html = `<!DOCTYPE html>
               <span class="blog-tag">Strategy</span>
               <span class="blog-date">July 5, 2026</span>
             </div>
-            <h3 class="blog-title">Rethinking How Indians Share Their Identity</h3>
+            <h3 class="blog-title">Rethinking How India Shares Identity</h3>
             <p class="blog-excerpt">An exploration into shifting the trust anchor offline, democratizing verification, and dismantling photocopy culture.</p>
             <div class="blog-action">Read Article <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
           </div>

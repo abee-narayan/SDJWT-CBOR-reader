@@ -2,7 +2,7 @@ const mammoth = require('mammoth');
 const fs = require('fs');
 const path = require('path');
 
-const inputDocx = path.join(__dirname, 'blogs_source', 'Rethinking How Indians Share Their Identity.docx');
+const inputDocx = path.join(__dirname, 'blogs', 'rethinking_identity', 'Rethinking How India Shares Identity.docx');
 const outputHtml = path.join(__dirname, 'blogs', 'rethinking_identity', 'content.txt');
 const imageDir = path.join(__dirname, 'blogs', 'rethinking_identity', 'images');
 
