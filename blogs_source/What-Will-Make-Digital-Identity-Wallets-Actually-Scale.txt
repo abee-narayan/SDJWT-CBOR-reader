@@ -1,0 +1,117 @@
+Europe is entering an interesting phase in the evolution of digital identity. After several years of work on eIDAS 2.0, common standards and pilots, countries are now moving towards deploying digital identity wallets at scale. Germany, France and several other countries have already been experimenting with wallet implementations, while the broader European ecosystem is working towards making the wallets interoperable across borders.
+
+The technology is no longer the most interesting question.
+
+The more difficult question is what happens after the wallet is launched.
+
+A government can build a secure wallet. It can issue digitally signed credentials. It can establish the trust framework and make the wallet interoperable with other wallets and verifiers. But none of this guarantees that citizens will use it, or that businesses will invest in accepting it.
+
+This is where I think the next phase of digital identity will be decided.
+
+The success of a wallet will depend less on whether it can technically hold a credential and more on whether enough useful things can actually be done with it.
+
+There is an obvious chicken-and-egg problem. Citizens have little reason to download a wallet if there is nowhere to use it. Businesses have little reason to integrate a wallet if their customers do not have it. Governments therefore need to solve both sides of the market at roughly the same time.
+
+Regulation can help with the first part.
+
+Suppose a digital identity wallet becomes an accepted way of proving age when accessing online services or purchasing age-restricted products. That could give millions of people a reason to download and set up a wallet. Government services can provide another strong entry point because citizens already have a reason to use them.
+
+But there is a question worth asking here: what happens after that first transaction?
+
+If someone downloads a wallet because a regulation requires them to prove their age once, and then never opens it again, have we really created a successful digital identity ecosystem?
+
+Perhaps not.
+
+Regulation can create the initial push, but it is difficult to imagine sustained adoption without some form of pull. People need to find the wallet genuinely useful.
+
+This is where the experience of private-sector wallets becomes relevant. The strength of products such as Apple Wallet or Google Wallet is not simply that they can store a credential. They are useful because they are connected to things people already do: travel, payments, tickets, loyalty programmes and other everyday activities. The identity credential becomes part of an existing journey rather than becoming another destination that the user has to visit.
+
+Public digital identity wallets will have to find their own version of this utility.
+
+Consider something as ordinary as applying for a mortgage. Today, the process may involve proving identity, providing employment information, submitting financial documents and repeatedly entering information that different organisations already have. If a wallet could allow a person to securely share verified information and complete a significant part of that process in minutes, the reason for having the wallet becomes obvious.
+
+Travel provides an even more interesting example.
+
+Imagine travelling from Milan to Geneva. You book your flight and receive the relevant credential in your wallet. You book a bus and receive the ticket there as well. You check into the hotel using your digital identity, receive your room credential and perhaps use the same wallet to access local transport.
+
+None of these individual use cases is revolutionary.
+
+What becomes interesting is when they start working together.
+
+The wallet stops being an application that you open when somebody asks you to prove who you are. It becomes part of the infrastructure through which you move through a digital journey.
+
+That is a much harder problem to solve.
+
+It also means that the organisations accepting the wallet may ultimately be as important as the wallet itself. Governments often spend considerable effort thinking about the issuance side: how credentials are issued, how they are secured, how selective disclosure works and how trust is established.
+
+But the real adoption battle may happen on the verifier side.
+
+A bank, airline, university or hotel has to decide whether integrating a wallet is worth the effort. They will look at the cost of integration, the number of customers who can use it, the quality of the user experience and whether it actually improves their business process.
+
+This is why wallet programmes need to think seriously about ecosystem development after the technology is ready. A dedicated partnerships and integration function can help businesses understand the value proposition, reduce the effort required to integrate, support them through deployment and continue working with them once they are live.
+
+The first organisations in the ecosystem may also matter disproportionately.
+
+Government services could provide a useful starting point because they already have large numbers of users and are less likely to abandon an integration simply because adoption is initially low. If a citizen can use the wallet for several government services, that gives the wallet an initial base of users and transactions. Private-sector use cases can then build on that base.
+
+This does not mean that government should become the permanent centre of the ecosystem. Quite the opposite. Government can provide the initial infrastructure and demand, while private-sector organisations create the breadth and frequency of use that ultimately makes the ecosystem valuable.
+
+And once the wallet is live, governments will need to behave less like infrastructure builders and more like product owners.
+
+The first year of deployment will reveal things that no pilot can completely predict. There will be users who cannot complete a transaction, credentials that do not work in particular situations, confusing consent journeys, integration problems with relying parties and edge cases that were never considered during design.
+
+The temptation will be to respond to every issue by adding another feature.
+
+That may not be the right approach.
+
+The more useful approach is to understand where people are dropping out and why. How many people download the wallet? How many actually set it up? How many obtain credentials? How many try to use them? How many presentations succeed? Which relying parties generate repeat usage? Where do transactions fail?
+
+These are not simply performance metrics. They tell us whether the ecosystem is actually working.
+
+There is another part of the wallet journey that I think deserves much more attention: what happens to a credential after it has been issued.
+
+People change their addresses, phone numbers and names. Licences expire. Qualifications are updated. Organisations need to revoke access. Credentials need to be replaced. Users may want to understand where information has been shared and, where the architecture permits it, withdraw permissions.
+
+These are not particularly exciting features to demonstrate at a conference.
+
+But they are fundamental to building trust.
+
+A wallet that handles the entire lifecycle of a credential well, rather than simply issuing and presenting it, will be much closer to becoming genuine digital infrastructure.
+
+There is also an interesting architectural question emerging as different countries move forward.
+
+There is unlikely to be one global model for digital identity wallets. Some countries may operate government wallets. Others may allow government-issued credentials to be held in private wallets. Some ecosystems may rely on SD-JWT, others on mdoc. Trust frameworks will also differ.
+
+That is not necessarily a problem.
+
+The important question is whether these different ecosystems can interact through common interfaces and standards. A citizen travelling from one country to another should not need to understand the architecture of either country's identity system. The complexity should sit behind the interfaces.
+
+This is why standards such as OpenID4VCI, OpenID4VP, W3C DC API, ISO 18013-5 and interoperable credential formats are so important. They allow countries to make different architectural choices without necessarily creating completely isolated ecosystems.
+
+But interoperability, by itself, will not create adoption.
+
+It only makes adoption possible.
+
+The next few years will therefore be a useful real-world test of different approaches to digital identity. We will see government-led wallets compete with more open ecosystems involving private wallets. We will see regulatory use cases tested alongside voluntary consumer use cases. We will see different approaches to trust, governance, credential formats and distribution.
+
+Some of these choices will work better than others.
+
+And I suspect that the answer will not be determined by the elegance of the underlying technology.
+
+It will be determined by whether the wallet solves enough real problems for enough people.
+
+This is perhaps the biggest lesson from digital public infrastructure such as UPI, Pix and PromptPay. Their success did not come simply from creating another digital interface for something that already existed. Their real value came from creating interoperable infrastructure that allowed banks, businesses and other organisations to build useful services on top of it.
+
+Digital identity has a similar opportunity.
+
+The ambition should not be to create a digital version of the identity card that people occasionally open when a website asks them to prove who they are.
+
+It should be to create an identity layer that makes a wide range of digital interactions simpler, faster and more trustworthy.
+
+If that happens, the wallet will not need to be promoted forever.
+
+People will use it because it is useful.
+
+And that, ultimately, is probably the real test of whether Europe's investment in digital identity wallets has succeeded.
+
+As a taxpayer, there is probably no greater satisfaction than seeing a large public investment become infrastructure that people actually find useful in their everyday lives.
