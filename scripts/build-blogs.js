@@ -29,11 +29,19 @@ async function buildBlogs() {
   const files = fs.readdirSync(sourceDir);
   const blogCards = [];
 
-  for (const file of files) {
+  // Gather file info and sort by birthtime descending
+  const fileInfos = files.map(file => {
     const ext = path.extname(file).toLowerCase();
     const basename = path.basename(file, ext);
     const filePath = path.join(sourceDir, file);
     const stat = fs.statSync(filePath);
+    return { file, ext, basename, filePath, stat };
+  });
+
+  fileInfos.sort((a, b) => b.stat.birthtime.getTime() - a.stat.birthtime.getTime());
+
+  for (const info of fileInfos) {
+    const { file, ext, basename, filePath, stat } = info;
     
     // Formatting date
     const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
