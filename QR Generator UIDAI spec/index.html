@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aadhaar Intent Request Generator</title>
-    <meta name="description" content="Generate Aadhaar intent requests and QR codes following UIDAI specifications for Verifiable Credentials." />
-    <meta name="keywords" content="Aadhaar, SD-JWT, mDOC, Verifiable credentials, Digital ID Wallet, Face Authentication, EUDI Wallet, Trust Registry, W3C VCDM, ISO MDOC, ZKP, Age Assurance, Long Fellow, DPI, Digital Public Infrastructure, UPI, Digilocker, ID4Africa" />
+    <title>Aadhaar QR &amp; Intent Generator (UIDAI Spec) | vcreader</title>
+    <meta name="description" content="Generate compressed cross-device QR codes and web intents from signed JWTs according to UIDAI Aadhaar specifications." />
+    <meta name="keywords" content="Aadhaar, SD-JWT, mDOC, Verifiable credentials, Digital ID Wallet, UIDAI QR, mAadhaar QR, Face Authentication, EUDI Wallet, Trust Registry, W3C VCDM, ISO MDOC, ZKP" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://vcreader.com/QR%20Generator%20UIDAI%20spec/index.html" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vcreader.com/QR%20Generator%20UIDAI%20spec/index.html" />
-    <meta property="og:title" content="Aadhaar Intent Request Generator" />
-    <meta property="og:description" content="Generate Aadhaar intent requests and QR codes following UIDAI specifications for Verifiable Credentials." />
+    <meta property="og:title" content="Aadhaar QR &amp; Intent Generator (UIDAI Spec)" />
+    <meta property="og:description" content="Generate compressed cross-device QR codes and web intents from signed JWTs according to UIDAI specifications." />
     <meta property="og:image" content="https://vcreader.com/assets/trust_registry.png" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://vcreader.com/QR%20Generator%20UIDAI%20spec/index.html" />
-    <meta property="twitter:title" content="Aadhaar Intent Request Generator" />
-    <meta property="twitter:description" content="Generate Aadhaar intent requests and QR codes following UIDAI specifications for Verifiable Credentials." />
+    <meta property="twitter:title" content="Aadhaar QR &amp; Intent Generator (UIDAI Spec)" />
+    <meta property="twitter:description" content="Generate compressed cross-device QR codes and web intents from signed JWTs according to UIDAI specifications." />
     <meta property="twitter:image" content="https://vcreader.com/assets/trust_registry.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script type="module" src="generator.js"></script>
 </head>
@@ -32,12 +32,75 @@
     </div>
 
     <main class="glass-container">
+        <a href="../index.html" class="back-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Back to Home
+        </a>
+
         <header>
-            <h1>Aadhaar Intent Request Generator</h1>
-            <p>Generate Web-to-App intents and Cross-Device QR codes for Aadhaar SD-JWT authentication.</p>
+            <h1>Aadhaar QR &amp; Intent Generator</h1>
+            <p>Generate compressed Cross-Device QR codes and Web-to-App Intents from signed JWTs according to official UIDAI specifications.</p>
         </header>
 
-        <section class="config-section">
+        <!-- Mode Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tabDirectJwt" data-tab="direct-jwt">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Paste Signed JWT
+            </button>
+            <button class="tab-btn" id="tabBuilder" data-tab="builder">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                Build &amp; Sign New JWT
+            </button>
+        </div>
+
+        <!-- Mode 1: Submit Signed JWT Directly -->
+        <section id="section-direct-jwt" class="config-section">
+            <div class="input-group">
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <label for="jwt-direct-input">Signed JWT (RS256)</label>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" id="btn-sample-jwt" style="background: none; border: none; color: var(--accent); font-size: 0.75rem; cursor: pointer; text-decoration: underline;">Load Sample JWT</button>
+                        <button type="button" id="btn-clear-jwt" style="background: none; border: none; color: var(--text-secondary); font-size: 0.75rem; cursor: pointer;">Clear</button>
+                    </div>
+                </div>
+                <textarea id="jwt-direct-input" rows="6" placeholder="Paste your signed RS256 JWT (eyJhbGciOiJSUzI1NiIs...) here to generate the QR code..."></textarea>
+            </div>
+
+            <div class="actions">
+                <button id="btn-generate-from-jwt" class="primary-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect></svg>
+                    Generate mAadhaar QR Code
+                </button>
+                <button id="btn-generate-web-direct" class="secondary-btn">
+                    Generate Web-to-App Intent
+                </button>
+            </div>
+
+            <!-- Live JWT Preview & Claims Breakdown -->
+            <div id="jwt-inspect-card" class="inspector-card hidden">
+                <div class="inspector-title">Decoded JWT Details</div>
+                <div style="display: grid; grid-template-columns: 120px 1fr; gap: 6px 10px; font-size: 0.82rem;">
+                    <div style="color: var(--text-secondary);">Algorithm / Typ:</div>
+                    <div id="inspect-header" style="font-family: 'JetBrains Mono', monospace;">-</div>
+                    <div style="color: var(--text-secondary);">Transaction ID:</div>
+                    <div id="inspect-txn" style="font-family: 'JetBrains Mono', monospace; word-break: break-all;">-</div>
+                    <div style="color: var(--text-secondary);">OVSE Client (ac/sa):</div>
+                    <div id="inspect-client" style="font-family: 'JetBrains Mono', monospace;">-</div>
+                    <div style="color: var(--text-secondary);">Callback URL:</div>
+                    <div id="inspect-cb" style="font-family: 'JetBrains Mono', monospace; word-break: break-all;">-</div>
+                    <div style="color: var(--text-secondary);">Validity:</div>
+                    <div id="inspect-validity">-</div>
+                </div>
+                <div style="margin-top: 6px;">
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Requested Claims (decoded from 'sc'):</div>
+                    <div id="inspect-claims-list" class="claims-badge-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mode 2: Builder & Signer Form -->
+        <section id="section-builder" class="config-section hidden">
             <div class="input-row">
                 <div class="input-group">
                     <label for="ac-input">OVSE Client ID (ac)</label>
@@ -50,7 +113,7 @@
             </div>
             <div class="input-group">
                 <label for="cb-input">Callback URL (cb)</label>
-                <div class="hint-text">Leave the default to use your local mock server. (Run ngrok on port 5173!)</div>
+                <div class="hint-text">Leave default or enter your server URL to receive credential presentation.</div>
                 <input type="url" id="cb-input" value="https://YOUR-NGROK-ID.ngrok-free.app/api/callback">
             </div>
 
@@ -66,37 +129,59 @@
                     <label for="private-key-input">RSA Private Key (PEM format)</label>
                     <button type="button" id="btn-fill-test-key" style="background: none; border: none; color: var(--accent); font-size: 0.75rem; cursor: pointer; text-decoration: underline;">Autofill Test Key</button>
                 </div>
-                <textarea id="private-key-input" placeholder="-----BEGIN PRIVATE KEY-----..."></textarea>
+                <textarea id="private-key-input" rows="4" placeholder="-----BEGIN PRIVATE KEY-----..."></textarea>
+            </div>
+
+            <div class="actions">
+                <button id="btn-generate-qr-builder" class="primary-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect></svg>
+                    Sign &amp; Generate QR
+                </button>
+                <button id="btn-generate-web-builder" class="secondary-btn">
+                    Sign &amp; Web Intent
+                </button>
             </div>
         </section>
 
-        <section class="actions">
-            <button id="btn-generate-web" class="primary-btn">Generate Web-to-App</button>
-            <button id="btn-generate-qr" class="primary-btn outline">Generate QR (Cross-Device)</button>
-        </section>
+        <div id="error-message" class="alert alert-error hidden"></div>
 
-        <div id="error-message" class="alert hidden"></div>
-
+        <!-- Results Section -->
         <section id="results-section" class="results-section hidden">
             <div class="card-header">
-                <h2>Generated Result <span class="tag" id="result-type"></span></h2>
+                <h2>Generated UIDAI Output <span class="tag" id="result-type"></span></h2>
             </div>
             <div class="result-content">
-                <textarea id="result-text" readonly></textarea>
-                <div id="qr-container" class="hidden">
+                <!-- QR Code View -->
+                <div id="qr-container" class="qr-box-container hidden">
                     <canvas id="qr-canvas"></canvas>
+                    <div class="qr-actions">
+                        <button id="btn-download-qr" class="secondary-btn">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Download QR (PNG)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- URL / Intent box -->
+                <div class="url-box">
+                    <label id="url-label" for="result-text">Output URI / Redirect URL</label>
+                    <div class="copy-input-group">
+                        <input type="text" id="result-text" readonly>
+                        <button id="btn-copy-result" class="secondary-btn" style="white-space: nowrap;">Copy</button>
+                    </div>
                 </div>
             </div>
         </section>
 
+        <!-- Polling Section -->
         <section id="polling-section" class="polling-section hidden">
             <div class="polling-header">
                 <div class="pulse-ring"></div>
                 <span>Listening for Aadhaar App Callback...</span>
             </div>
-            <div id="callback-result" class="hidden">
+            <div id="callback-result" class="hidden" style="margin-top: 1rem;">
                 <p><strong>Success!</strong> Credential received.</p>
-                <button id="btn-view-credential" class="primary-btn" style="margin-top: 1rem;">View in Decoder</button>
+                <button id="btn-view-credential" class="primary-btn" style="margin-top: 0.75rem; max-width: 260px; margin-left: auto; margin-right: auto;">View in Decoder</button>
             </div>
         </section>
     </main>
