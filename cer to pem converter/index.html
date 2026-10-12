@@ -3,37 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CER/CRT to PEM Converter</title>
-    <meta name="description" content="Convert CER/CRT certificates to PEM format." />
-    <meta name="keywords" content="Aadhaar, SD-JWT, mDOC, Verifiable credentials, Digital ID Wallet, Face Authentication, EUDI Wallet, Trust Registry, W3C VCDM, ISO MDOC, ZKP, Age Assurance, Long Fellow, DPI, Digital Public Infrastructure, UPI, Digilocker, ID4Africa" />
+    <title>CER ⇄ PEM Certificate Converter | vcreader</title>
+    <meta name="description" content="Two-way X.509 certificate converter between CER/CRT (binary DER / Base64) and PEM formats with client-side certificate inspection." />
+    <meta name="keywords" content="Aadhaar, SD-JWT, mDOC, Verifiable credentials, Digital ID Wallet, Face Authentication, EUDI Wallet, Trust Registry, W3C VCDM, ISO MDOC, CER to PEM, PEM to CER, X.509 converter" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://vcreader.com/cer%20to%20pem%20converter/index.html" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vcreader.com/cer%20to%20pem%20converter/index.html" />
-    <meta property="og:title" content="CER/CRT to PEM Converter" />
-    <meta property="og:description" content="Convert CER/CRT certificates to PEM format." />
+    <meta property="og:title" content="CER ⇄ PEM Certificate Converter" />
+    <meta property="og:description" content="Convert between CER/CRT and PEM certificates with instant client-side inspection." />
     <meta property="og:image" content="https://vcreader.com/assets/trust_registry.png" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://vcreader.com/cer%20to%20pem%20converter/index.html" />
-    <meta property="twitter:title" content="CER/CRT to PEM Converter" />
-    <meta property="twitter:description" content="Convert CER/CRT certificates to PEM format." />
+    <meta property="twitter:title" content="CER ⇄ PEM Certificate Converter" />
+    <meta property="twitter:description" content="Convert between CER/CRT and PEM certificates with instant client-side inspection." />
     <meta property="twitter:image" content="https://vcreader.com/assets/trust_registry.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0b0d14;
             --surface: #111520;
             --surface2: #181d2e;
-            --border: rgba(255, 255, 255, 0.07);
-            --border2: rgba(255, 255, 255, 0.12);
+            --border: rgba(255, 255, 255, 0.08);
+            --border2: rgba(255, 255, 255, 0.15);
             --text: #e8eaf2;
             --text-muted: #8b93b0;
             --accent: #6c8fe8;
             --accent2: #9b5de5;
-            --radius: 14px;
-            --radius-sm: 8px;
+            --green: #39d98a;
+            --red: #f25f5c;
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
@@ -41,61 +49,146 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
         }
+
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.18;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #4f6ef7; top: -150px; left: -100px; }
+        .orb-2 { width: 400px; height: 400px; background: #9b5de5; bottom: -100px; right: -80px; }
 
         .container {
-            background: var(--surface);
+            position: relative;
+            z-index: 1;
+            background: rgba(17, 21, 32, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border2);
             border-radius: var(--radius);
-            padding: 32px;
+            padding: 36px;
             width: 100%;
-            max-width: 500px;
-            box-shadow: 0 4px 40px rgba(0, 0, 0, 0.4);
-            text-align: center;
+            max-width: 680px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
         }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #e8eaf2 30%, #6c8fe8 100%);
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #8aabf5;
+            text-decoration: underline;
+        }
+
+        .header-title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 10%, #8aabf5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
         }
 
-        p {
+        .header-sub {
             color: var(--text-muted);
             font-size: 14px;
+            line-height: 1.5;
             margin-bottom: 24px;
         }
 
+        /* Mode Tabs */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(79, 110, 247, 0.3), rgba(155, 93, 229, 0.3));
+            color: #fff;
+            border: 1px solid rgba(108, 143, 232, 0.4);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Upload Box */
         .upload-area {
             border: 2px dashed var(--border2);
             border-radius: var(--radius-sm);
-            padding: 40px 20px;
+            padding: 32px 20px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s;
             background: rgba(255, 255, 255, 0.02);
             position: relative;
+            text-align: center;
+            margin-bottom: 16px;
         }
 
         .upload-area:hover, .upload-area.dragover {
             border-color: var(--accent);
-            background: rgba(108, 143, 232, 0.05);
+            background: rgba(108, 143, 232, 0.08);
+            transform: translateY(-1px);
         }
 
         .upload-icon {
             color: var(--accent);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .upload-text {
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
         }
 
         .upload-subtext {
@@ -104,38 +197,67 @@
             margin-top: 4px;
         }
 
-        #fileInput {
+        .file-input {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             opacity: 0;
             cursor: pointer;
         }
 
-        .result-area {
-            margin-top: 24px;
-            display: none;
-            text-align: left;
+        .or-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 16px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
         }
+        .or-divider::before, .or-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+        .or-divider:not(:empty)::before { margin-right: 12px; }
+        .or-divider:not(:empty)::after { margin-left: 12px; }
 
-        .result-area.active {
-            display: block;
+        .textarea-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
         }
 
         textarea {
             width: 100%;
-            height: 150px;
             background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: var(--radius-sm);
             color: var(--text);
-            padding: 12px;
-            font-family: monospace;
+            padding: 12px 14px;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            resize: none;
-            margin-bottom: 12px;
+            line-height: 1.5;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap;
         }
 
         .btn-primary {
@@ -147,64 +269,245 @@
             color: #fff;
             border: none;
             border-radius: var(--radius-sm);
-            padding: 10px 20px;
-            font-size: 14px;
+            padding: 11px 20px;
+            font-size: 13.5px;
             font-weight: 600;
             cursor: pointer;
-            transition: opacity 0.2s, transform 0.1s;
-            width: 100%;
+            transition: all 0.2s;
+            flex: 1;
         }
-
         .btn-primary:hover {
-            opacity: 0.9;
+            opacity: 0.92;
             transform: translateY(-1px);
         }
-
         .btn-primary:active {
             transform: translateY(0);
         }
 
-        .error-message {
-            color: #f25f5c;
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border2);
+            color: var(--text);
+            border-radius: var(--radius-sm);
+            padding: 11px 18px;
+            font-size: 13.5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Certificate Info Card */
+        .cert-card {
+            background: rgba(24, 29, 46, 0.7);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 18px;
+            font-size: 12.5px;
+        }
+        .cert-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .cert-card-title {
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 11.5px;
+        }
+        .cert-badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        .cert-badge.valid { background: rgba(57, 217, 138, 0.15); color: #5edf9e; border: 1px solid rgba(57, 217, 138, 0.3); }
+        .cert-badge.expired { background: rgba(242, 95, 92, 0.15); color: #f58280; border: 1px solid rgba(242, 95, 92, 0.3); }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 8px 12px;
+        }
+        .cert-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .cert-val {
+            color: var(--text);
+            word-break: break-all;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
-            margin-top: 12px;
-            display: none;
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-error {
+            background: rgba(242, 95, 92, 0.1);
+            border: 1px solid rgba(242, 95, 92, 0.3);
+            color: #fca5a5;
+        }
+        .alert-warning {
+            background: rgba(244, 185, 66, 0.1);
+            border: 1px solid rgba(244, 185, 66, 0.3);
+            color: #fde68a;
+        }
+        .hidden { display: none !important; }
+
+        .footer-note {
+            margin-top: 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 24px 18px; }
+            .cert-grid { grid-template-columns: 1fr; }
+            .actions-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>CER/CRT to PEM Converter</h1>
-    <p>Upload a .cer or .crt public certificate to extract and download the PEM file.</p>
-
-    <div class="upload-area" id="uploadArea">
-        <svg class="upload-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="17 8 12 3 7 8"></polyline>
-            <line x1="12" y1="3" x2="12" y2="15"></line>
-        </svg>
-        <div class="upload-text">Click to upload or drag and drop</div>
-        <div class="upload-subtext">.cer or .crt files only</div>
-        <input type="file" id="fileInput" accept=".cer,.crt">
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
     </div>
 
-    <div class="error-message" id="errorMessage">Invalid file format. Please upload a .cer or .crt file.</div>
+    <div class="container">
+        <a href="../index.html" class="back-link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Back to Home
+        </a>
 
-    <div class="result-area" id="resultArea">
-        <textarea id="pemOutput" readonly></textarea>
-        <button class="btn-primary" id="downloadBtn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Download PEM
-        </button>
+        <h1 class="header-title">CER ⇄ PEM Certificate Converter</h1>
+        <p class="header-sub">Convert seamlessly between binary DER / Base64 (.cer / .crt) and PEM formats with client-side X.509 inspection.</p>
+
+        <!-- Direction Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" id="tabCerToPem" data-tab="cer2pem">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                CER / CRT → PEM
+            </button>
+            <button class="tab-btn" id="tabPemToCer" data-tab="pem2cer">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 14 12 9 7 14"></polyline><line x1="12" y1="9" x2="12" y2="21"></line></svg>
+                PEM → CER (Binary DER)
+            </button>
+        </div>
+
+        <!-- Section 1: CER to PEM -->
+        <div id="sectionCerToPem">
+            <div class="upload-area" id="uploadAreaCer">
+                <svg class="upload-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <div class="upload-text">Upload a .cer or .crt Certificate</div>
+                <div class="upload-subtext">Supports binary DER or Base64 encoded certificates</div>
+                <input type="file" class="file-input" id="fileInputCer" accept=".cer,.crt,.der">
+            </div>
+
+            <div id="errorCer" class="alert alert-error hidden"></div>
+
+            <div id="resultCerArea" class="hidden">
+                <div class="textarea-label">
+                    <span>Generated PEM Certificate</span>
+                    <span id="cerFileNameTag" style="color: var(--accent);"></span>
+                </div>
+                <textarea id="pemOutput" rows="8" readonly spellcheck="false"></textarea>
+
+                <div class="actions-row">
+                    <button class="btn-primary" id="downloadPemBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download .pem
+                    </button>
+                    <button class="btn-secondary" id="copyPemBtn">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copy PEM
+                    </button>
+                </div>
+
+                <!-- Certificate Metadata Card -->
+                <div id="certInfoCer" class="cert-card hidden"></div>
+            </div>
+        </div>
+
+        <!-- Section 2: PEM to CER -->
+        <div id="sectionPemToCer" class="hidden">
+            <div class="upload-area" id="uploadAreaPem">
+                <svg class="upload-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <polyline points="9 15 12 12 15 15"></polyline>
+                </svg>
+                <div class="upload-text">Upload a .pem Certificate</div>
+                <div class="upload-subtext">or drag and drop your .pem / .crt file</div>
+                <input type="file" class="file-input" id="fileInputPem" accept=".pem,.crt,.txt">
+            </div>
+
+            <div class="or-divider">or paste PEM text directly</div>
+
+            <div class="textarea-label">
+                <span>PEM Input</span>
+                <span style="font-weight: normal; text-transform: none; color: var(--text-muted);">Begins with -----BEGIN CERTIFICATE-----</span>
+            </div>
+            <textarea id="pemInput" rows="6" placeholder="-----BEGIN CERTIFICATE-----&#10;MIIEczCCA1ugAwIBAgIU...&#10;-----END CERTIFICATE-----" spellcheck="false"></textarea>
+
+            <div class="actions-row" style="margin-top: 12px;">
+                <button class="btn-primary" id="btnConvertPemToCer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Convert &amp; Inspect Certificate
+                </button>
+                <button class="btn-secondary" id="btnClearPem">Clear</button>
+            </div>
+
+            <div id="errorPem" class="alert alert-error hidden"></div>
+            <div id="warnPem" class="alert alert-warning hidden"></div>
+
+            <div id="resultPemArea" class="hidden">
+                <div class="actions-row" style="margin-top: 20px;">
+                    <button class="btn-primary" id="downloadCerBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Download .cer (Binary DER)
+                    </button>
+                    <button class="btn-secondary" id="downloadCerBase64Btn">
+                        Download .cer (Base64)
+                    </button>
+                </div>
+
+                <!-- Certificate Metadata Card -->
+                <div id="certInfoPem" class="cert-card hidden"></div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Runs entirely in your browser using Web Cryptography and Forge. No certificates or keys are transmitted to any server.
+        </div>
     </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
-<script src="app.js"></script>
+    <!-- Node Forge Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
