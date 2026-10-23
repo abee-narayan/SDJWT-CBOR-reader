@@ -166,10 +166,70 @@
         <div id="output-section" class="output-section hidden">
           <div class="output-header">
             <div id="format-badge-container"></div>
-            <button id="btn-copy-json" class="btn-ghost small">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              Copy JSON
-            </button>
+            <div class="output-actions">
+              <button id="btn-toggle-verify" class="btn-ghost small hidden">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Verify Signature
+              </button>
+              <button id="btn-copy-json" class="btn-ghost small">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                Copy JSON
+              </button>
+            </div>
+          </div>
+
+          <div id="verify-card" class="verify-card hidden">
+            <div class="verify-card-header">
+              <div class="verify-card-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                <span>SD-JWT Cryptographic Verification</span>
+                <span id="verify-alg-badge" class="badge badge-blue"></span>
+              </div>
+              <div class="verify-key-actions">
+                <button id="btn-load-uidai-jwks" class="btn-ghost small" title="Load UIDAI Pehchaan .well-known/jwks.json keys">Load UIDAI JWKS</button>
+                <button id="btn-gen-test-sdjwt" class="btn-ghost small" title="Generate a fresh signed SD-JWT and matching public key to test verification">Generate Signed Test Pair</button>
+                <button id="btn-use-cnf-key" class="btn-ghost small hidden" title="Load holder binding public key from JWT cnf.jwk claim">Use Embedded cnf.jwk</button>
+                <button id="btn-clear-key" class="btn-ghost small">Clear Key</button>
+              </div>
+            </div>
+            <div class="verify-url-row">
+              <div class="verify-url-input-wrap">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <input
+                  type="url"
+                  id="verify-jwks-url"
+                  class="verify-url-input"
+                  placeholder="Paste JWKS or .well-known URL (e.g. https://pehchaan.uidai.gov.in/.well-known/jwks.json)"
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+              </div>
+              <button id="btn-fetch-jwks" class="btn-ghost small">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Fetch &amp; Verify
+              </button>
+            </div>
+            <div class="verify-mode-tabs">
+              <button class="verify-mode-btn active" data-mode="auto">Auto-Detect (All Formats)</button>
+              <button class="verify-mode-btn" data-mode="wellknown">.well-known / JWKS JSON</button>
+              <button class="verify-mode-btn" data-mode="jwk">Single JWK</button>
+              <button class="verify-mode-btn" data-mode="pem">Public Cert / Key (PEM / Text)</button>
+            </div>
+            <textarea
+              id="verify-key-input"
+              class="verify-textarea"
+              spellcheck="false"
+              autocomplete="off"
+              placeholder='Paste JWKS / .well-known JSON ({"keys":[...]}), a JWKS URL (https://.../.well-known/jwks.json), Single JWK, Public Certificate (-----BEGIN CERTIFICATE-----), or Public Key (-----BEGIN PUBLIC KEY-----) here…'
+            ></textarea>
+            <div class="verify-footer">
+              <span id="verify-key-hint" class="format-hint"></span>
+              <button id="btn-run-verify" class="btn-primary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Verify Signature &amp; Disclosures
+              </button>
+            </div>
+            <div id="verify-result" class="verify-result hidden"></div>
           </div>
 
           <div id="tabs" class="tabs">
