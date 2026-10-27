@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptographic Key Generator</title>
-    <meta name="description" content="Generate ES256 and RS256 cryptographic keys for Verifiable Credentials." />
-    <meta name="keywords" content="Aadhaar, SD-JWT, mDOC, Verifiable credentials, Digital ID Wallet, Face Authentication, EUDI Wallet, Trust Registry, W3C VCDM, ISO MDOC, ZKP, Age Assurance, Long Fellow, DPI, Digital Public Infrastructure, UPI, Digilocker, ID4Africa" />
+    <title>Cryptographic Key Pair &amp; CSR Generator</title>
+    <meta name="description" content="Generate ES256 and RS256 cryptographic key pairs and PKCS#10 Certificate Signing Requests (.csr) for Verifiable Credentials." />
+    <meta name="keywords" content="Aadhaar, SD-JWT, mDOC, Verifiable credentials, CSR Generator, PKCS10, Digital ID Wallet, Face Authentication, EUDI Wallet, Trust Registry, W3C VCDM, ISO MDOC, ZKP, Age Assurance, Long Fellow, DPI, Digital Public Infrastructure, UPI, Digilocker, ID4Africa" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://vcreader.com/Private%20public%20key%20generator/index.html" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vcreader.com/Private%20public%20key%20generator/index.html" />
-    <meta property="og:title" content="Cryptographic Key Generator" />
-    <meta property="og:description" content="Generate ES256 and RS256 cryptographic keys for Verifiable Credentials." />
+    <meta property="og:title" content="Cryptographic Key Pair &amp; CSR Generator" />
+    <meta property="og:description" content="Generate ES256 and RS256 cryptographic key pairs and PKCS#10 Certificate Signing Requests (.csr) for Verifiable Credentials." />
     <meta property="og:image" content="https://vcreader.com/assets/trust_registry.png" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://vcreader.com/Private%20public%20key%20generator/index.html" />
-    <meta property="twitter:title" content="Cryptographic Key Generator" />
-    <meta property="twitter:description" content="Generate ES256 and RS256 cryptographic keys for Verifiable Credentials." />
+    <meta property="twitter:title" content="Cryptographic Key Pair &amp; CSR Generator" />
+    <meta property="twitter:description" content="Generate ES256 and RS256 cryptographic key pairs and PKCS#10 Certificate Signing Requests (.csr) for Verifiable Credentials." />
     <meta property="twitter:image" content="https://vcreader.com/assets/trust_registry.png" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,41 +32,44 @@
 
     <main class="glass-container">
         <header>
-            <h1>Key Generator</h1>
-            <p>Generate secure cryptographic keys for JWT, SD-JWT, and standard implementations directly in your browser.</p>
+            <div style="margin-bottom: 0.75rem;">
+                <a href="../index.html" class="back-link">← Back to VC Reader</a>
+            </div>
+            <h1>Key Pair &amp; CSR Generator</h1>
+            <p>Generate secure cryptographic key pairs and PKCS#10 Certificate Signing Requests (<code>.csr</code>) directly in your browser.</p>
         </header>
 
         <section class="controls">
             <div class="input-group">
-                <label for="algorithm-select">Algorithm</label>
+                <label for="algorithm-select">1. Select Algorithm &amp; Generate Key Pair</label>
                 <select id="algorithm-select">
-                    <optgroup label="HMAC (Symmetric)">
-                        <option value="HS256">HS256 (HMAC with SHA-256)</option>
-                        <option value="HS384">HS384 (HMAC with SHA-384)</option>
-                        <option value="HS512">HS512 (HMAC with SHA-512)</option>
-                    </optgroup>
                     <optgroup label="RSA (PKCS1-v1_5)">
-                        <option value="RS256" selected>RS256 (RSA with SHA-256)</option>
-                        <option value="RS384">RS384 (RSA with SHA-384)</option>
-                        <option value="RS512">RS512 (RSA with SHA-512)</option>
+                        <option value="RS256" selected>RS256 (RSA 2048-bit with SHA-256)</option>
+                        <option value="RS384">RS384 (RSA 2048-bit with SHA-384)</option>
+                        <option value="RS512">RS512 (RSA 2048-bit with SHA-512)</option>
+                    </optgroup>
+                    <optgroup label="ECDSA">
+                        <option value="ES256">ES256 (ECDSA P-256 / prime256v1)</option>
+                        <option value="ES384">ES384 (ECDSA P-384 / secp384r1)</option>
+                        <option value="ES512">ES512 (ECDSA P-521 / secp521r1)</option>
                     </optgroup>
                     <optgroup label="RSA-PSS">
                         <option value="PS256">PS256 (RSA-PSS with SHA-256)</option>
                         <option value="PS384">PS384 (RSA-PSS with SHA-384)</option>
                         <option value="PS512">PS512 (RSA-PSS with SHA-512)</option>
                     </optgroup>
-                    <optgroup label="ECDSA">
-                        <option value="ES256">ES256 (ECDSA P-256)</option>
-                        <option value="ES384">ES384 (ECDSA P-384)</option>
-                        <option value="ES512">ES512 (ECDSA P-521)</option>
-                    </optgroup>
                     <optgroup label="EdDSA">
                         <option value="EdDSA">EdDSA (Ed25519)</option>
+                    </optgroup>
+                    <optgroup label="HMAC (Symmetric)">
+                        <option value="HS256">HS256 (HMAC with SHA-256)</option>
+                        <option value="HS384">HS384 (HMAC with SHA-384)</option>
+                        <option value="HS512">HS512 (HMAC with SHA-512)</option>
                     </optgroup>
                 </select>
             </div>
             <button id="generate-btn" class="primary-btn">
-                <span class="btn-text">Generate Keys</span>
+                <span class="btn-text">Generate Key Pair</span>
                 <div class="spinner" id="generate-spinner"></div>
             </button>
         </section>
@@ -74,26 +77,102 @@
         <div id="error-message" class="alert hidden"></div>
 
         <section class="results hidden" id="results-section">
-            <div class="key-card" id="private-key-card">
-                <div class="card-header">
-                    <h2>Private Key <span class="tag" id="private-tag">PEM</span></h2>
-                    <button class="download-btn" id="download-private-btn" title="Download Private Key">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        Download
-                    </button>
+            <div class="keys-grid" id="keys-grid">
+                <div class="key-card" id="private-key-card">
+                    <div class="card-header">
+                        <h2>Private Key <span class="tag" id="private-tag">PEM</span></h2>
+                        <div class="card-actions">
+                            <button class="download-btn" id="copy-private-btn" title="Copy Private Key">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                Copy
+                            </button>
+                            <button class="download-btn" id="download-private-btn" title="Download Private Key">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                Download .pem
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="private-key-display" readonly spellcheck="false"></textarea>
                 </div>
-                <textarea id="private-key-display" readonly spellcheck="false"></textarea>
+
+                <div class="key-card" id="public-key-card">
+                    <div class="card-header">
+                        <h2>Public Key <span class="tag">PEM</span></h2>
+                        <div class="card-actions">
+                            <button class="download-btn" id="copy-public-btn" title="Copy Public Key">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                Copy
+                            </button>
+                            <button class="download-btn" id="download-public-btn" title="Download Public Key">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                Download .pem
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="public-key-display" readonly spellcheck="false"></textarea>
+                </div>
             </div>
 
-            <div class="key-card" id="public-key-card">
+            <div class="key-card" id="csr-section-card">
                 <div class="card-header">
-                    <h2>Public Key <span class="tag">PEM</span></h2>
-                    <button class="download-btn" id="download-public-btn" title="Download Public Key">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        Download
+                    <h2>2. Certificate Signing Request (CSR) <span class="tag">PKCS#10 · .CSR</span></h2>
+                    <button class="primary-btn small-primary-btn" id="generate-csr-btn" type="button">
+                        <span class="btn-text">Generate CSR</span>
                     </button>
                 </div>
-                <textarea id="public-key-display" readonly spellcheck="false"></textarea>
+                <div class="csr-form-body">
+                    <p class="csr-helper-text">Enter the Subject Distinguished Name (DN) attributes for your certificate below, or use the defaults to immediately generate and download a signed <code>.csr</code> file from your generated key pair.</p>
+                    <div class="csr-grid">
+                        <div class="csr-field">
+                            <label for="csr-cn">Common Name (CN) *</label>
+                            <input type="text" id="csr-cn" placeholder="e.g. vcreader.com or mdoc-issuer" value="vcreader.com" />
+                        </div>
+                        <div class="csr-field">
+                            <label for="csr-o">Organization (O)</label>
+                            <input type="text" id="csr-o" placeholder="e.g. UIDAI / Microsave" value="VC Reader" />
+                        </div>
+                        <div class="csr-field">
+                            <label for="csr-ou">Organizational Unit (OU)</label>
+                            <input type="text" id="csr-ou" placeholder="e.g. Digital Identity" value="Digital Trust" />
+                        </div>
+                        <div class="csr-field">
+                            <label for="csr-c">Country Code (C - 2 letters)</label>
+                            <input type="text" id="csr-c" maxlength="2" placeholder="e.g. IN" value="IN" />
+                        </div>
+                        <div class="csr-field">
+                            <label for="csr-st">State / Province (ST)</label>
+                            <input type="text" id="csr-st" placeholder="e.g. Karnataka" value="Karnataka" />
+                        </div>
+                        <div class="csr-field">
+                            <label for="csr-l">Locality / City (L)</label>
+                            <input type="text" id="csr-l" placeholder="e.g. Bengaluru" value="Bengaluru" />
+                        </div>
+                        <div class="csr-field">
+                            <label for="csr-email">Email Address</label>
+                            <input type="email" id="csr-email" placeholder="e.g. admin@vcreader.com" />
+                        </div>
+                        <div class="csr-field">
+                            <label for="csr-san">Subject Alternative Names (DNS, comma-separated)</label>
+                            <input type="text" id="csr-san" placeholder="e.g. vcreader.com, www.vcreader.com" />
+                        </div>
+                    </div>
+                </div>
+                <div id="csr-output-container" class="csr-output-container hidden">
+                    <div class="csr-output-toolbar">
+                        <span class="csr-subject-preview" id="csr-subject-preview"></span>
+                        <div class="card-actions">
+                            <button class="download-btn" id="copy-csr-btn" title="Copy CSR PEM">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                Copy CSR
+                            </button>
+                            <button class="download-btn highlight-download-btn" id="download-csr-btn" title="Download .csr file">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                Download .csr
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="csr-display" readonly spellcheck="false"></textarea>
+                </div>
             </div>
         </section>
     </main>
